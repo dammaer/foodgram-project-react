@@ -10,7 +10,7 @@ services:
       - ./.env
 
   backend:
-    image: foodgram_backend
+    image: dammaer/foodgram_backend
     container_name: foodgram_backend
     restart: always
     volumes:
@@ -22,7 +22,7 @@ services:
       - ./.env
 
   frontend:
-    image: foodgram_frontend
+    image: dammaer/foodgram_frontend
     container_name: foodgram_frontend
     volumes:
       - ../frontend/:/app/result_build/
