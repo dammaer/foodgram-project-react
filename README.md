@@ -37,7 +37,7 @@ docker-compose exec backend python manage.py load_csv ./data/ingredients.csv
 ```
 
 ### Github actions
-### Workflow состоит из четырёх шагов:
+# Workflow состоит из четырёх шагов:
 - Тестирование проекта.
 - Сборка и публикация образа.
 - Автоматический деплой (dammaer.ml)
