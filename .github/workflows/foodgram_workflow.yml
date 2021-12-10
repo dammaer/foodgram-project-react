@@ -28,10 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: tests
     steps:
+        working-directory: ./backend
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Set up Docker Buildx
-        working-directory: ./backend
         uses: docker/setup-buildx-action@v1
       - name: Login to Docker 
         uses: docker/login-action@v1
