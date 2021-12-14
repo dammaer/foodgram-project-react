@@ -25,9 +25,6 @@ jobs:
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
     needs: tests
     steps:
       - name: Check out the repo
@@ -42,6 +39,7 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2 
         with:
+          context: ./backend
           push: true
           tags: dammaer/foodgram_backend
 
@@ -60,9 +58,11 @@ jobs:
             cd Django/foodgram-project-react/infra/
             sudo docker pull dammaer/foodgram_backend
             sudo docker-compose stop
-            sudo docker-compose rm foodgram_backend
-            [ ! -f .env ] && touch .env
-            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            sudo docker-compose rm backend
+            [ -f .env ] && rm .env
+            touch .env
+            echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+            echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
             echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env

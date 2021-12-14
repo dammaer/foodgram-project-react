@@ -1,9 +1,10 @@
 from django.db.models import Sum
 from django.http import HttpResponse
-from recipes.models import RecipeIngredient
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
+
+from recipes.models import RecipeIngredient
 
 
 def generate_pdf_shopping_list(user):
@@ -11,7 +12,7 @@ def generate_pdf_shopping_list(user):
         recipe__shopping_cart__user=user).values(
             'ingredient__name',
             'ingredient__measurement_unit'
-    ).annotate(amount=Sum('amount')).order_by()
+    ).annotate(amount=Sum('amount'))
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = (
         'attachment; filename="shopping_list.pdf"'

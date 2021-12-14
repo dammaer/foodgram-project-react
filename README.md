@@ -1,4 +1,4 @@
-![Foodgram workflow](https://github.com/dammaer/foodgram-project-reactl/actions/workflows/foodgram_workflow.yml/badge.svg)
+![Foodgram workflow](https://github.com/dammaer/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 
 # Дипломный проект Яндекс.Практикум - Foodgram
 ### Описание:

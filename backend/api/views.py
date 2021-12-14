@@ -1,17 +1,18 @@
-from api.filters import IngredientSearchFilter, RecipesListFilter
-from api.pagination import LimitPageNumberPagination
-from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
-from api.serializers import (AddRecipeSerializer, IngredientSerializer,
-                             RecipeSerializer, TagSerializer)
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
+from api.filters import IngredientSearchFilter, RecipesListFilter
+from api.pagination import LimitPageNumberPagination
+from api.permissions import IsAdminOrReadOnly
+from api.serializers import (AddRecipeSerializer, IngredientSerializer,
+                             RecipeCrUpdSerializer, RecipeReadSerializer,
+                             TagSerializer)
+from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 from .utils import generate_pdf_shopping_list
 
 
@@ -31,11 +32,15 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
     pagination_class = LimitPageNumberPagination
     filter_backends = (DjangoFilterBackend,)
     filter_class = RecipesListFilter
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return RecipeReadSerializer
+        return RecipeCrUpdSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -48,7 +53,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return self.add_obj(Favorite, request.user, pk)
         elif request.method == 'DELETE':
             return self.delete_obj(Favorite, request.user, pk)
-        return None
 
     @action(detail=True, methods=['get', 'delete'],
             permission_classes=[IsAuthenticated])
@@ -58,7 +62,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return self.add_obj(ShoppingCart, request.user, pk)
         elif request.method == 'DELETE':
             return self.delete_obj(ShoppingCart, request.user, pk)
-        return None
 
     @action(detail=False, methods=['get'],
             permission_classes=[IsAuthenticated])
