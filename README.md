@@ -31,7 +31,13 @@ cp .env.template .env
 docker-compose up -d
 ```
 У вас развернётся проект, запущенный с использованием gunicorn и базой данных postgres.
-После успешного запуска контейноров, загрузите в БД подготовленные данные об ингридиентах из **csv** файла (по желанию!):
+После успешного запуска контейнеров выполните миграции и создайте суперпользователя:
+```
+docker-compose exec backend python manage.py makemirations
+docker-compose exec backend python manage.py migrate
+docker-compose exec backend python manage.py createsuperuser
+```
+По желанию загрузите в БД подготовленные данные об ингридиентах из **csv** файла (по желанию!):
 ```
 docker-compose exec backend python manage.py load_csv ./data/ingredients.csv
 ```
