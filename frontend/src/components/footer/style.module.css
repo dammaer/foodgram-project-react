@@ -38,3 +38,20 @@
     line-height: 20px;
     color: #FFFFFF;
 }
+
+.footer__links {
+    text-align: right;
+}
+
+.footer__links .footer__brand:not(:last-child) { 
+    margin-right: 20px
+}
+
+.footer__link {
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+.footer__link:hover {
+    opacity: 0.8;
+}
