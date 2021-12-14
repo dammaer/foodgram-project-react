@@ -37,7 +37,7 @@ docker-compose exec backend python manage.py makemirations
 docker-compose exec backend python manage.py migrate
 docker-compose exec backend python manage.py createsuperuser
 ```
-По желанию загрузите в БД подготовленные данные об ингридиентах из **csv** файла (по желанию!):
+По желанию загрузите в БД подготовленные данные об ингридиентах из **csv** файла:
 ```
 docker-compose exec backend python manage.py load_csv ./data/ingredients.csv
 ```
