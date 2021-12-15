@@ -1,5 +1,6 @@
 from django.db.models import Sum
 from django.http import HttpResponse
+from reportlab.lib.colors import black, red
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
@@ -22,12 +23,12 @@ def generate_pdf_shopping_list(user):
     )
     page = Canvas(filename=response)
     page.setFont('DejaVuSerif', 24)
+    page.setFillColor(red)
     page.drawString(210, 800, 'Список покупок')
-    page.setFont('DejaVuSerif', 16)
     height = 760
-    is_page_done = False
     for idx, ingr in enumerate(shopping_list, start=1):
-        is_page_done = False
+        page.setFont('DejaVuSerif', 16)
+        page.setFillColor(black)
         page.drawString(60, height, text=(
             f'{idx}. {ingr["ingredient__name"]} - {ingr["amount"]} '
             f'{ingr["ingredient__measurement_unit"]}'
@@ -35,8 +36,6 @@ def generate_pdf_shopping_list(user):
         height -= 30
         if height <= 40:
             page.showPage()
-            is_page_done = True
-    if not is_page_done:
-        page.showPage()
+            height = 800
     page.save()
     return response
