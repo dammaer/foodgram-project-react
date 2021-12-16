@@ -30,7 +30,7 @@ def generate_pdf_shopping_list(user):
         page.setFont('DejaVuSerif', 16)
         page.setFillColor(black)
         page.drawString(60, height, text=(
-            f'{idx}. {ingr["ingredient__name"]} - {ingr["amount_sum"]} '
+            f'{idx}. {ingr["ingredient__name"]} - {ingr["amount__sum"]} '
             f'{ingr["ingredient__measurement_unit"]}'
         ))
         height -= 30
